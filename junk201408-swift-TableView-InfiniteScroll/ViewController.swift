@@ -12,14 +12,19 @@ class ViewController: UIViewController ,UITableViewDelegate, UITableViewDataSour
     
     @IBOutlet weak var tableView: UITableView!
                             
-    let DETA_SECTION = 0
-    let FOTTER_SECTION = 1
+    let HEADER_SECTION = 0
+    let DETA_SECTION = 1
+    let FOTTER_SECTION = 2
     
-    var dateSize = 20
+    var dataArray:[Data] = []
+    
+    var headerReview = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        addDataAfter(5)
         
         self.tableView.delegate = self;
         self.tableView.dataSource = self
@@ -32,34 +37,45 @@ class ViewController: UIViewController ,UITableViewDelegate, UITableViewDataSour
     
     //UITableViewDataSource
     func numberOfSectionsInTableView(tableView: UITableView!) -> Int {
-        return 2
+        return 3
     }
 
     //UITableViewDataSource
     func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
-        if section == DETA_SECTION {
-            return self.dateSize
-        } else if section == FOTTER_SECTION {
-            return 1
+        
+        switch section {
+            case HEADER_SECTION:return 1
+            case DETA_SECTION:return self.dataArray.count
+            case FOTTER_SECTION:return 1
+            default:return 0
         }
-        return 0
+  
     }
     
     
     //UITableViewDataSource
     func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
         
-        if indexPath.section == DETA_SECTION {
-            let cell = tableView.dequeueReusableCellWithIdentifier("dataCell", forIndexPath: indexPath) as DataCell
-            cell.setCaption("Dataセル セクション:\(indexPath.section)  \(indexPath.row + 1)行目")
+        switch indexPath.section {
+        case HEADER_SECTION:
+            let cell = tableView.dequeueReusableCellWithIdentifier("headerCell", forIndexPath: indexPath) as UITableViewCell
             return cell
-        } else if indexPath.section == FOTTER_SECTION {
+        case DETA_SECTION:
+            let cell = tableView.dequeueReusableCellWithIdentifier("dataCell", forIndexPath: indexPath) as DataCell
+            
+            let data = self.dataArray[indexPath.row]
+            cell.setCaption("Dataセル セクション:\(data.index)  \(data.caption)")
+            
+            return cell
+        case FOTTER_SECTION:
             let cell = tableView.dequeueReusableCellWithIdentifier("fotterCell", forIndexPath: indexPath) as UITableViewCell
             return cell
-        } else {
-            return UITableViewCell()
+        default:return UITableViewCell()
         }
         
+        
+ 
+ 
     }
     
     //UITableViewDelegate
@@ -69,12 +85,53 @@ class ViewController: UIViewController ,UITableViewDelegate, UITableViewDataSour
     
     //UITableViewDelegate
     func tableView(tableView: UITableView!, willDisplayCell cell: UITableViewCell!, forRowAtIndexPath indexPath: NSIndexPath!) {
-        println("セクション:\(indexPath.section)  \(indexPath.row + 1)行目")
+        //println("セクション:\(indexPath.section) \(dataArray.count)行中\(indexPath.row + 1)行目")
         
-        if indexPath.section == FOTTER_SECTION {
-            self.dateSize += 10
-            tableView.reloadData()
+        if indexPath.section == HEADER_SECTION {
+            if headerReview {
+                addDataBefore(2)
+                self.tableView.reloadData()
+            }
+            
+            
+            headerReview = !headerReview
+        }else  if indexPath.section == FOTTER_SECTION {
+            addDataAfter(2)
+            self.tableView.reloadData()
         }
     }
+    
+ 
+    
+    private func addDataAfter(count:Int) {
+        for i in 0..<count {
+            let last:Data? = self.dataArray.last
+            let baseIndex = last == nil ? 0 : last!.index
+            
+            let newIndex = baseIndex + 1
+            let newData = Data(index: newIndex,caption: "\(newIndex)行目")
+            self.dataArray.append(newData)
+        }
+    }
+    
+    private func addDataBefore(count:Int) {
+        for i in 0..<count {
+            let first:Data = self.dataArray.first!
+            let baseIndex = first.index
+            
+            let newIndex = baseIndex - 1
+            let newData = Data(index: newIndex,caption: "\(newIndex)行目")
+            self.dataArray.insert(newData, atIndex: 0)
+        }
+    }
+    
+    @IBAction func tapDebug(sender: AnyObject) {
+        println("============")
+        for data in dataArray {
+            println("\(dataArray.count)/\(data.index)")
+        }
+        println("============")
+    }
+    
 }
 

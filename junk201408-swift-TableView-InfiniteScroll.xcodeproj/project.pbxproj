@@ -13,6 +13,7 @@
 		F4187B2A19A9884500FF7DCE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4187B2919A9884500FF7DCE /* Images.xcassets */; };
 		F4187B3619A9884500FF7DCE /* junk201408_swift_TableView_InfiniteScrollTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4187B3519A9884500FF7DCE /* junk201408_swift_TableView_InfiniteScrollTests.swift */; };
 		F4D9480419A9AA820016CE14 /* DataCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D9480319A9AA820016CE14 /* DataCell.swift */; };
+		F4D9480619A9B3C70016CE14 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D9480519A9B3C70016CE14 /* Data.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +37,7 @@
 		F4187B3419A9884500FF7DCE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4187B3519A9884500FF7DCE /* junk201408_swift_TableView_InfiniteScrollTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = junk201408_swift_TableView_InfiniteScrollTests.swift; sourceTree = "<group>"; };
 		F4D9480319A9AA820016CE14 /* DataCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataCell.swift; sourceTree = "<group>"; };
+		F4D9480519A9B3C70016CE14 /* Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 			children = (
 				F4187B2219A9884500FF7DCE /* AppDelegate.swift */,
 				F4187B2419A9884500FF7DCE /* ViewController.swift */,
+				F4D9480519A9B3C70016CE14 /* Data.swift */,
 				F4D9480319A9AA820016CE14 /* DataCell.swift */,
 				F4187B2619A9884500FF7DCE /* Main.storyboard */,
 				F4187B2919A9884500FF7DCE /* Images.xcassets */,
@@ -214,6 +217,7 @@
 				F4187B2519A9884500FF7DCE /* ViewController.swift in Sources */,
 				F4D9480419A9AA820016CE14 /* DataCell.swift in Sources */,
 				F4187B2319A9884500FF7DCE /* AppDelegate.swift in Sources */,
+				F4D9480619A9B3C70016CE14 /* Data.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
