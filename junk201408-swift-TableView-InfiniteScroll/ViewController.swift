@@ -17,13 +17,15 @@ class ViewController: UIViewController ,UITableViewDelegate, UITableViewDataSour
     let DETA_SECTION = 0
     let FOTTER_SECTION = 1
     
-    var dataArray:[Data] = []
-
+    var dataArray:[Data] = [] //モデルのリスト
+    let INIT_DATA_COUNT = 10 //初期表示データ
+    let ADD_DATA_COUNT = 5 ///最後尾が表示された時に追加するデータ数
+    let REFLESH_DATA_COUNT = 2 ///引っ張られた時に上に追加するデータ数
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         
-        addDataAfter(10)
+        addDataAfter(INIT_DATA_COUNT)
         
         self.refreshControl.addTarget(self, action: "callbackRefreshControl", forControlEvents: UIControlEvents.ValueChanged)
         
@@ -80,12 +82,14 @@ class ViewController: UIViewController ,UITableViewDelegate, UITableViewDataSour
     //UITableViewDelegate
     func tableView(tableView: UITableView!, willDisplayCell cell: UITableViewCell!, forRowAtIndexPath indexPath: NSIndexPath!) {
 
+        //2つ目のセクションが表示されたら、モデルにデータ追加
         if indexPath.section == FOTTER_SECTION {
-            addDataAfter(2)
+            addDataAfter(ADD_DATA_COUNT)
             self.tableView.reloadData()
         }
     }
 
+    //モデル操作
     private func addDataAfter(count:Int) {
         for i in 0..<count {
             let last:Data? = self.dataArray.last
@@ -97,6 +101,14 @@ class ViewController: UIViewController ,UITableViewDelegate, UITableViewDataSour
         }
     }
     
+    //UIRefreshControl
+    func callbackRefreshControl(){
+        addDataBefore(REFLESH_DATA_COUNT)
+        self.tableView.reloadData()
+        self.refreshControl.endRefreshing()
+    }
+    
+    //モデル操作
     private func addDataBefore(count:Int) {
         for i in 0..<count {
             let first:Data = self.dataArray.first!
@@ -107,14 +119,8 @@ class ViewController: UIViewController ,UITableViewDelegate, UITableViewDataSour
             self.dataArray.insert(newData, atIndex: 0)
         }
     }
-    
-    //UIRefreshControl
-    func callbackRefreshControl(){
-        addDataBefore(2)
-        self.tableView.reloadData()
-        self.refreshControl.endRefreshing()
-    }
-    
+
+    //モデルのデバッグ表示
     @IBAction func tapDebug(sender: AnyObject) {
         println("============")
         for data in dataArray {
