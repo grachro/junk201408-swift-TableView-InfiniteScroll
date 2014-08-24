@@ -20,7 +20,7 @@ class ViewController: UIViewController ,UITableViewDelegate, UITableViewDataSour
     var dataArray:[Data] = [] //モデルのリスト
     let INIT_DATA_COUNT = 10 //初期表示データ
     let ADD_DATA_COUNT = 5 ///最後尾が表示された時に追加するデータ数
-    let REFLESH_DATA_COUNT = 2 ///引っ張られた時に上に追加するデータ数
+    let REFLESH_DATA_COUNT = 3 ///引っ張られた時に上に追加するデータ数
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,12 +60,23 @@ class ViewController: UIViewController ,UITableViewDelegate, UITableViewDataSour
         
         switch indexPath.section {
         case DETA_SECTION:
-            let cell = tableView.dequeueReusableCellWithIdentifier("dataCell", forIndexPath: indexPath) as DataCell
             
             let data = self.dataArray[indexPath.row]
-            cell.setCaption("Dataセル セクション:\(data.index)  \(data.caption)")
             
-            return cell
+            
+            if data.index % 2 == 0 {
+                let cell = tableView.dequeueReusableCellWithIdentifier("dataCellA", forIndexPath: indexPath) as DataCellA
+                cell.setCaption("a Dataセル セクション:\(data.index)  \(data.caption)")
+                
+                return cell
+            } else {
+                let cell = tableView.dequeueReusableCellWithIdentifier("dataCellB", forIndexPath: indexPath) as DataCellB
+                cell.setCaption("b Dataセル セクション:\(data.index)  \(data.caption)")
+                
+                return cell
+            }
+            
+
         case FOTTER_SECTION:
             let cell = tableView.dequeueReusableCellWithIdentifier("fotterCell", forIndexPath: indexPath) as UITableViewCell
             return cell
