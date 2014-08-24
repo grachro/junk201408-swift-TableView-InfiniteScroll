@@ -11,23 +11,25 @@ import UIKit
 class ViewController: UIViewController ,UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
-                            
-    let HEADER_SECTION = 0
-    let DETA_SECTION = 1
-    let FOTTER_SECTION = 2
+
+    let refreshControl = UIRefreshControl()
+    
+    let DETA_SECTION = 0
+    let FOTTER_SECTION = 1
     
     var dataArray:[Data] = []
-    
-    var headerReview = false
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        addDataAfter(5)
+        addDataAfter(10)
+        
+        self.refreshControl.addTarget(self, action: "callbackRefreshControl", forControlEvents: UIControlEvents.ValueChanged)
         
         self.tableView.delegate = self;
         self.tableView.dataSource = self
+        self.tableView.addSubview(self.refreshControl)
     }
     
     override func didReceiveMemoryWarning() {
@@ -44,22 +46,17 @@ class ViewController: UIViewController ,UITableViewDelegate, UITableViewDataSour
     func tableView(tableView: UITableView!, numberOfRowsInSection section: Int) -> Int {
         
         switch section {
-            case HEADER_SECTION:return 1
             case DETA_SECTION:return self.dataArray.count
             case FOTTER_SECTION:return 1
             default:return 0
         }
   
     }
-    
-    
+
     //UITableViewDataSource
     func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
         
         switch indexPath.section {
-        case HEADER_SECTION:
-            let cell = tableView.dequeueReusableCellWithIdentifier("headerCell", forIndexPath: indexPath) as UITableViewCell
-            return cell
         case DETA_SECTION:
             let cell = tableView.dequeueReusableCellWithIdentifier("dataCell", forIndexPath: indexPath) as DataCell
             
@@ -72,10 +69,7 @@ class ViewController: UIViewController ,UITableViewDelegate, UITableViewDataSour
             return cell
         default:return UITableViewCell()
         }
-        
-        
- 
- 
+
     }
     
     //UITableViewDelegate
@@ -85,28 +79,17 @@ class ViewController: UIViewController ,UITableViewDelegate, UITableViewDataSour
     
     //UITableViewDelegate
     func tableView(tableView: UITableView!, willDisplayCell cell: UITableViewCell!, forRowAtIndexPath indexPath: NSIndexPath!) {
-        //println("セクション:\(indexPath.section) \(dataArray.count)行中\(indexPath.row + 1)行目")
-        
-        if indexPath.section == HEADER_SECTION {
-            if headerReview {
-                addDataBefore(2)
-                self.tableView.reloadData()
-            }
-            
-            
-            headerReview = !headerReview
-        }else  if indexPath.section == FOTTER_SECTION {
+
+        if indexPath.section == FOTTER_SECTION {
             addDataAfter(2)
             self.tableView.reloadData()
         }
     }
-    
- 
-    
+
     private func addDataAfter(count:Int) {
         for i in 0..<count {
             let last:Data? = self.dataArray.last
-            let baseIndex = last == nil ? 0 : last!.index
+            let baseIndex = last == nil ? -1 : last!.index
             
             let newIndex = baseIndex + 1
             let newData = Data(index: newIndex,caption: "\(newIndex)行目")
@@ -125,6 +108,13 @@ class ViewController: UIViewController ,UITableViewDelegate, UITableViewDataSour
         }
     }
     
+    //UIRefreshControl
+    func callbackRefreshControl(){
+        addDataBefore(2)
+        self.tableView.reloadData()
+        self.refreshControl.endRefreshing()
+    }
+    
     @IBAction func tapDebug(sender: AnyObject) {
         println("============")
         for data in dataArray {
@@ -133,5 +123,7 @@ class ViewController: UIViewController ,UITableViewDelegate, UITableViewDataSour
         println("============")
     }
     
+
+
 }
 
