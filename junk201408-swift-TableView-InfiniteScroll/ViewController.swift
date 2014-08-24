@@ -41,7 +41,7 @@ class ViewController: UIViewController ,UITableViewDelegate, UITableViewDataSour
     
     //UITableViewDataSource
     func numberOfSectionsInTableView(tableView: UITableView!) -> Int {
-        return 3
+        return 2
     }
 
     //UITableViewDataSource
